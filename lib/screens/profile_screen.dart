@@ -19,6 +19,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Text('Instagram',
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Billabong',
+                fontSize: 35.0,
+              ))),
       backgroundColor: Colors.white,
       body: FutureBuilder(
         future: usersRef.document(widget.userId).get(),
@@ -36,8 +44,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     CircleAvatar(
                       radius: 50.0,
                       backgroundColor: Colors.grey,
-                      backgroundImage:
-                          user.profileImageUrl.isEmpty ? AssetImage('assets/images/user_placeholder.png') : CachedNetworkImageProvider(user.profileImageUrl),
+                      backgroundImage: user.profileImageUrl.isEmpty
+                          ? AssetImage('assets/images/user_placeholder.png')
+                          : CachedNetworkImageProvider(user.profileImageUrl),
                     ),
                     Expanded(
                       child: Column(
@@ -96,9 +105,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             width: 200.0,
                             child: FlatButton(
                               onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => EditProfileScreen(user: user))
-                              ),
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) =>
+                                          EditProfileScreen(user: user))),
                               color: Colors.blue,
                               textColor: Colors.white,
                               child: Text(
