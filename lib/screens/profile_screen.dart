@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/post_model.dart';
 import 'package:instagram_clone/models/user_data.dart';
 import 'package:instagram_clone/models/user_model.dart';
+import 'package:instagram_clone/screens/comments_screen.dart';
 import 'package:instagram_clone/screens/edit_profile_screen.dart';
+import 'package:instagram_clone/services/auth_service.dart';
 import 'package:instagram_clone/services/database_service.dart';
 import 'package:instagram_clone/utilities/contants.dart';
 import 'package:instagram_clone/widgets/post_view.dart';
@@ -273,9 +275,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _buildTilePost(Post post) {
     return GridTile(
-      child: Image(
-        image: CachedNetworkImageProvider(post.imageUrl),
-        fit: BoxFit.cover,
+      child: GestureDetector(
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) => CommentsScreen(
+                      post: post,
+                      likeCount: post.likeCount,
+                    ))),
+        child: Image(
+          image: CachedNetworkImageProvider(post.imageUrl),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
@@ -312,13 +323,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Text('Instagram',
-              style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Billabong',
-                fontSize: 35.0,
-              ))),
+        backgroundColor: Colors.white,
+        title: Text('Instagram',
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Billabong',
+              fontSize: 35.0,
+            )),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: AuthService.logout,
+          )
+        ],
+      ),
       backgroundColor: Colors.white,
       body: FutureBuilder(
         future: usersRef.document(widget.userId).get(),
